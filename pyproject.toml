@@ -2,7 +2,10 @@
 name = "fastapiproject"
 version = "0.1.0"
 description = ""
-authors = ["Yaroslavshym <139383618+Yaroslavshym@users.noreply.github.com>"]
+authors = [
+    "Yaroslavshym <139383618+Yaroslavshym@users.noreply.github.com>",
+
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
