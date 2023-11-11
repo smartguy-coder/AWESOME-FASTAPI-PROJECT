@@ -1,0 +1,16 @@
+name: Check branch name
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '(hotfix\/[a-z._-]+|(DEV|INF)-[0-9]+)'
+          allowed_prefixes: 'hotfix,DEV,INF'
+          ignore: main
+          min_length: 5
+          max_length: 45
