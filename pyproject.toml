@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "fastapiproject"
+name = "AWESOME-FASTAPI-PROJECT"
 version = "0.1.0"
 description = ""
 authors = [
     "Yaroslavshym <139383618+Yaroslavshym@users.noreply.github.com>",
+    "Vasyl Kartychak https://github.com/smartguy-coder/AWESOME-FASTAPI-PROJECT",
 
 ]
 readme = "README.md"
