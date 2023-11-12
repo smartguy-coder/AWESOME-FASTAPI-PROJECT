@@ -52,3 +52,7 @@ install-dev:  # make install-dev package='pytest'
 	poetry install
 
 ################################################################################
+.PHONY: run
+run:
+	uvicorn app.main:app --reload --port 8000
+
