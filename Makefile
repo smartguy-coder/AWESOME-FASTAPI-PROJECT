@@ -24,8 +24,8 @@ build-unix:
 
 
 # create virtualenv from existing poetry.lock and pyproject.toml
-.PHONY: create-virt
-create-virt:  # after command activate virtualenv
+.PHONY: create-virt-win
+create-virt-win:  # after command activate virtualenv
 	python.exe -m pip install --upgrade pip
 	pip install poetry
 	poetry install
