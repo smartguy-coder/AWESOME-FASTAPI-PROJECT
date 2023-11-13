@@ -3,7 +3,7 @@ from app.api import api_router
 import sentry_sdk
 
 app = FastAPI(
-    title='First our app',
+    title='Our app',
     description='we are champions',
     version='0.1.0',
     debug=True
