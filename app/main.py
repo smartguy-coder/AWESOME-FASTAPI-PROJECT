@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from app.api import api_router
+from fastapi_versioning import version, VersionedFastAPI
+
 import sentry_sdk
 from settings import settings
 
@@ -13,3 +15,5 @@ app = FastAPI(
 sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
 app.include_router(api_router.router)
+
+app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')

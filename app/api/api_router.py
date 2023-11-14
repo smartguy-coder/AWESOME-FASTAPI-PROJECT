@@ -3,12 +3,11 @@ from fastapi_versioning import version
 
 router = APIRouter(
     prefix='/api',
-    tags=['menu', 'landing'],
+    tags=['landing'],
 )
 
 
-@router.get('/v1/about')
+@router.get('/about')
 @version(1)
-async def about()->dict:
-    1/0
+async def about() -> dict:
     return {}
