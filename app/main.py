@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from app.api import api_router
-from fastapi_versioning import version, VersionedFastAPI
 
 import sentry_sdk
-from settings import settings
+from app.settings import settings
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -16,5 +15,5 @@ sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sa
 
 app.include_router(api_router.router)
 
-# TODO: temporary disable to check regular web endpoints
+# TODO: temporary disable to check regular web endpoints. In future useful for REACT
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
