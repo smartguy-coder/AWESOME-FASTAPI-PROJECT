@@ -16,4 +16,5 @@ sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sa
 
 app.include_router(api_router.router)
 
-app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
+# TODO: temporary disable to check regular web endpoints
+# app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
