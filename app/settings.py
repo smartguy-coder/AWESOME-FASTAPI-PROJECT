@@ -1,6 +1,9 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from datetime import datetime
+from typing import Union
 
+from pydantic import BaseModel
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     APP_NAME: str = "Awesome API"
@@ -13,3 +16,22 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+class Item(BaseModel):
+    names: dict = {
+        "name": "default_name",
+        "description": "default_description",
+        "description1": "default_description1",
+        "description2": "default_description2",
+        "description3": "default_description3",
+    }
+    version: str = "0.1.0"
+    date: datetime = datetime.now()
+
+    def to_dict(self):
+        return {
+            "names": self.names,
+            "version": self.version,
+            "date": self.date.isoformat(),
+        }
+
+
