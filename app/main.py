@@ -6,7 +6,7 @@ from app.settings import settings
 
 app = FastAPI(
     title=settings.APP_NAME,
-    description='we are champions',
+    description='we are the champions',
     version=settings.CURRENT_APP_VERSION,
     debug=settings.DEBUG,
 )
