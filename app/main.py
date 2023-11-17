@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from app.api import api_router
 
 import sentry_sdk
-from app.settings import settings
 
+from app.settings import settings
 from app.auth import router_auth
 
 app = FastAPI(

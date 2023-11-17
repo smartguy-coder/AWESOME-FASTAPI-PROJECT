@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from .schemas import AuthDetails
 
 router = APIRouter(
     prefix='/auth',
@@ -7,5 +8,5 @@ router = APIRouter(
 
 
 @router.post('/register')
-async def register():
-    return
+async def register(auth_details: AuthDetails) -> dict:
+    return {}
