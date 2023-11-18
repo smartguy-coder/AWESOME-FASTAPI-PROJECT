@@ -36,4 +36,4 @@ Abbreviation CI/CD translate as stand for continuous integration and continuous 
 </table>
 
 ## Github Marketplace
-<a style="color: ; padding-left; padding-top" href="https://github.com/marketplace?type=actions" >It's auxiliary templates for code</a>
+<a style="padding-left;" href="https://github.com/marketplace?type=actions" >It's auxiliary templates for code</a>
