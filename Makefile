@@ -61,3 +61,9 @@ run:
 mkdocs:
 	mkdocs serve -a 127.0.0.1:12000
 
+.PHONY: check-fix-code
+check-fix-code:
+	@echo "Start check🐿"
+	black .
+	isort .
+	flake8 .
