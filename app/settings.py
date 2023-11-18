@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # in order to place settings with the main file we dynamically get path to .env
-    model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), '.env'))
+    model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
 
 
 settings = Settings()
