@@ -2,6 +2,7 @@
 It is platform, which help you, automatically check your code.
 Abbreviation CI/CD translate as stand for continuous integration and continuous delivery or continuous deployment.
 
+
 ## Familiarization with CI/CD 
 <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" >Here you can learn how work CI/CD</a>
 
@@ -33,3 +34,6 @@ Abbreviation CI/CD translate as stand for continuous integration and continuous 
     </tr>
   </tbody>
 </table>
+
+## Github Marketplace
+<a style="color: ; padding-left; padding-top" href="https://github.com/marketplace?type=actions" >It's auxiliary templates for code</a>
