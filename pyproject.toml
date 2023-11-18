@@ -5,7 +5,7 @@ description = ""
 authors = [
     "Yaroslavshym <139383618+Yaroslavshym@users.noreply.github.com>",
     "Vasyl Kartychak https://github.com/smartguy-coder/AWESOME-FASTAPI-PROJECT",
-
+    "Danylo Soldatenko <dansoldat9@gmail.com>",
 ]
 readme = "README.md"
 
@@ -16,6 +16,7 @@ fastapi = {extras = ["all"], version = "^0.104.1"}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
+mkdocs = "^1.5.3"
 
 [build-system]
 requires = ["poetry-core"]
