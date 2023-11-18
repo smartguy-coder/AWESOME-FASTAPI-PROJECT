@@ -5,3 +5,4 @@ nav:
   - Deploy: deploy.md
   - Database : db_connection.md
   - Used Ports: used_ports.md
+  - Actions: action.md
