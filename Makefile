@@ -52,3 +52,9 @@ install-dev:  # make install-dev package='pytest'
 	poetry install
 
 ################################################################################
+
+
+.PHONY: mkdocs
+mkdocs:
+	pip install mkdocs
+	mkdocs serve -a 127.0.0.1:12000
