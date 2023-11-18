@@ -4,6 +4,7 @@ Abbreviation CI/CD translate as stand for continuous integration and continuous 
 
 ## Familiarization with CI/CD 
 <a href="https://www.redhat.com/en/topics/devops/what-is-ci-cd" >Here you can learn how work CI/CD</a>
+<img src="img/githabaction.jpg">
 
 
 ## How to build action file
