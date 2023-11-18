@@ -5,6 +5,7 @@ from typing import Union
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     APP_NAME: str = "Awesome API"
     SENTRY_SDK_DSN: str
@@ -16,6 +17,8 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
 class Item(BaseModel):
     names: dict = {
         "name": "default_name",
@@ -33,5 +36,3 @@ class Item(BaseModel):
             "version": self.version,
             "date": self.date.isoformat(),
         }
-
-
