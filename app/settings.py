@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from typing import Union
-
+from typing import List
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -11,13 +11,13 @@ class Settings(BaseSettings):
     SENTRY_SDK_DSN: str
     CURRENT_APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
-
+    USER:str
+    PASSWORD:str
     # in order to place settings with the main file we dynamically get path to .env
     model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), '.env'))
 
 
 settings = Settings()
-
 
 class Item(BaseModel):
     names: dict = {
@@ -36,3 +36,9 @@ class Item(BaseModel):
             "version": self.version,
             "date": self.date.isoformat(),
         }
+class Story(BaseModel):
+    stroy_id: str
+    text: str
+    title: str
+    tags: List[str]
+    utc_time: datetime
