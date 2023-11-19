@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi_versioning import version
 
-from app.settings import Item
+from settings import Item
 
 router = APIRouter(
     prefix='/api',

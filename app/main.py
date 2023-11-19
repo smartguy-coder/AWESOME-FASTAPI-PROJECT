@@ -3,17 +3,17 @@ from app.api import api_router
 
 import sentry_sdk
 
-from app.settings import settings
+from settings import project_info
 from app.auth import router_auth
 
 app = FastAPI(
-    title=settings.APP_NAME,
+    title=project_info.APP_NAME,
     description='we are the champions',
-    version=settings.CURRENT_APP_VERSION,
-    debug=settings.DEBUG,
+    version=project_info.CURRENT_APP_VERSION,
+    debug=project_info.DEBUG,
 )
 
-sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
+sentry_sdk.init(dsn=project_info.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
 app.include_router(api_router.router)
 app.include_router(router_auth.router)
