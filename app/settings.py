@@ -1,10 +1,9 @@
 import os
-from datetime import datetime
 from typing import Union
-from typing import List
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from datetime import datetime
+from typing import List
+from pydantic import BaseModel, Field
 
 class Settings(BaseSettings):
     APP_NAME: str = "Awesome API"
@@ -37,8 +36,8 @@ class Item(BaseModel):
             "date": self.date.isoformat(),
         }
 class Story(BaseModel):
-    stroy_id: str
-    text: str
-    title: str
-    tags: List[str]
-    utc_time: datetime
+    story_id: str
+    text: str = Field("Story", description="Text of the story")
+    title: str = Field("Story Title", description="Title of the story")
+    tags: List[str] = Field([], description="List of tags")
+    utc_time: datetime = Field(default_factory=datetime.utcnow, description="UTC time of the story creation")

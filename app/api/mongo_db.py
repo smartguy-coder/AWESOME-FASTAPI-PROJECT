@@ -1,3 +1,4 @@
+import cluster as cluster
 from fastapi import FastAPI, HTTPException, APIRouter
 from pydantic import BaseModel
 from typing import List, Optional
@@ -8,12 +9,10 @@ from app.settings import settings
 from app.settings import Story
 from fastapi.responses import JSONResponse
 
-url=f'mongodb+srv://{settings.USER}:{settings.PASSWORD}@cluster0.sjdq4xj.mongodb.net/retryWrites=true&w=majority'
 
-client = MongoClient(url)
-db = client["FASTAPI_JUNIOR_FULL"]
-collection = db["stories"]
+cluster=MongoClient('mongodb+srv://super_user:gTeW01WRUQ9yaP4H@cluster0.sjdq4xj.mongodb.net/retryWrites=true&w=majority')
 
+collection = cluster.test_db.stories
 router = APIRouter(
     prefix='',
     tags=['landing'],
@@ -25,8 +24,10 @@ router = APIRouter(
 
 @router.post("/add_story", response_model=Story)
 def add_story(story: Story):
+    print(story)
     story_id = str(uuid4())
     utc_time = datetime.utcnow()
+    print(story)
     new_story = {
         "story_id": story_id,
         "text": story.text,
@@ -34,6 +35,7 @@ def add_story(story: Story):
         "tags": story.tags,
         "utc_time": utc_time
     }
+    print(story)
     collection.insert_one(new_story)
     return JSONResponse(content={"story_id": story_id, **story.__dict__}, status_code=201)
 
