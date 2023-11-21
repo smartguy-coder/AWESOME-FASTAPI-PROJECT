@@ -1,4 +1,3 @@
-import cluster as cluster
 from fastapi import FastAPI, HTTPException, APIRouter
 from pydantic import BaseModel
 from typing import List, Optional
@@ -6,9 +5,11 @@ from datetime import datetime
 from uuid import UUID, uuid4
 from pymongo import MongoClient
 from app.settings import settings
-from app.settings import Story
 from fastapi.responses import JSONResponse
-
+from pydantic import BaseModel, Field
+from typing import List
+from datetime import datetime
+from uuid import uuid4
 
 cluster=MongoClient('mongodb+srv://super_user:gTeW01WRUQ9yaP4H@cluster0.sjdq4xj.mongodb.net/retryWrites=true&w=majority')
 
@@ -22,22 +23,40 @@ router = APIRouter(
 
 # Ендпоінт для додавання історій
 
-@router.post("/add_story", response_model=Story)
-def add_story(story: Story):
-    print(story)
-    story_id = str(uuid4())
-    utc_time = datetime.utcnow()
-    print(story)
-    new_story = {
-        "story_id": story_id,
-        "text": story.text,
-        "title": story.title,
-        "tags": story.tags,
-        "utc_time": utc_time
+
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
+from datetime import datetime
+from uuid import uuid4
+
+router = APIRouter()
+
+# Модель для історії
+class Story(BaseModel):
+    story_id: str = Field(default_factory=lambda: str(uuid4()))
+    text: str = Field(..., description="Text of the story")
+    title: str = Field(..., description="Title of the story")
+    tags: list = Field([], description="List of tags")
+    utc_time: datetime = Field(default_factory=datetime.utcnow, description="UTC time of the story creation")
+
+    def to_dict(self):
+        return {
+            "names": self.names,
+            "version": self.version,
+            "date": self.date.isoformat(),
+        }
+
+@router.post("/add_story")
+@router.get("/add_story")
+async def add_story_post():
+    pattern = {
+        "_id": 2,
+        "name": "Jeryy",
+        "age": 20,
+        "balance": 2000,
     }
-    print(story)
-    collection.insert_one(new_story)
-    return JSONResponse(content={"story_id": story_id, **story.__dict__}, status_code=201)
+    collection.insert_one(pattern)
+    return True
 
 
 
