@@ -1,0 +1,8 @@
+site_name: FASTAPI_PROJECT
+nav:
+  - Guide: index.md
+  - Authentication: auth.md
+  - Structure: structure.md
+  - Deploy: deploy.md
+  - Database : db_connection.md
+  - Used Ports: used_ports.md

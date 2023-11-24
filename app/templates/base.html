@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    {% block title %}
+    {% endblock %}
+    <style>
+        body {
+            background-color: rgb(44, 43, 44);
+            color: white;
+        }
+        a {
+            background-color: rgb(210, 179, 53);
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="header" id="myHeader">
+        <div class="header-right">
+            <a href="/api/menu">Menu</a>
+            {% if user_id %}
+            <a href="/api/logout">Log out</a>
+            {% else %}
+            <a href="/api/register">Sign up</a>
+            <a href="/api/login">Log in </a>
+
+            {% endif %}
+        </div>
+    </div>
+
+
+{% block content %}
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+
+{% block content %}
+<form method="post" action="/api/login-final">
+    <div>
+    <!-- Email-->
+    <div class="inputInfo">
+      <label for="user_login" class="form-label">Email</label>
+      <input name="user_login" type="email" class="sendRegisterData" id="user_login" placeholder="example@gmail.com" value=""
+        required>
+    </div>
+    <!-- Password -->
+    <div>
+    {% if warning %}
+        <label>{{ warning }}</label>
+    {% endif %}
+    </div>
+    <div class="inputInfo">
+      <label class="form-label">Password</label>
+      <input name="password" type="password" class="sendRegisterData" id="password" placeholder="Password12345" value=""
+        required>
+    </div>
+    <!-- submit button -->
+    <div class="inputInfo">
+      <button class="btn btn-outline-danger" type="submit" >Log in</button>
+    </div>
+  </div>
+
+
+</form>
+
+
+
+{% endblock %}
