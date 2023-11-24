@@ -1,17 +1,21 @@
 from fastapi import FastAPI
 from app.api import api_router
+from fastapi.staticfiles import StaticFiles
 
 import sentry_sdk
-from app.settings import settings
+
+from app.settings import Settings
 
 app = FastAPI(
-    title=settings.APP_NAME,
+    title=Settings.APP_NAME,
     description='we are the champions',
-    version=settings.CURRENT_APP_VERSION,
-    debug=settings.DEBUG,
+    version=Settings.CURRENT_APP_VERSION,
+    debug=Settings.DEBUG,
 )
 
-sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
+app.mount('/app/templates/qr_images', StaticFiles(directory='app/templates/qr_images'), name='qr_images')
+
+sentry_sdk.init(dsn=Settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
 app.include_router(api_router.router)
 

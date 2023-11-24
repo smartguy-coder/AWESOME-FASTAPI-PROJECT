@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+
+{% block content %}
+<form method="post" action="/api/register-final">
+
+  <!--Name-->
+  <div>
+    <div class="inputInfo">
+      <label style="text-align: center;" for="name" class="form-label">First name:</label>
+      <input name="name" type="text" class="sendRegisterData" id="name" placeholder="Name" value="" required>
+    </div>
+
+    <!-- Email-->
+    <div class="inputInfo">
+      <label for="user_login" class="form-label">Email</label>
+      <input name="user_login" type="email" class="sendRegisterData" id="user_login" placeholder="example@gmail.com" value=""
+        required>
+    </div>
+    <!-- Password -->
+    {% if warning %}
+        <label>{{ warning }}</label>
+    {% endif %}
+    <div class="inputInfo">
+      <label class="form-label">Password</label>
+      <input name="password" type="password" class="sendRegisterData" id="password" placeholder="Password12345" value=""
+        required>
+    </div>
+    <!-- Password 2-->
+
+    <div class="inputInfo">
+      <label class="form-label">Password confirmation</label>
+      <input name="password2" type="password" class="sendRegisterData" id="password2" placeholder="Password12345" value=""
+        required>
+    </div>
+
+
+    <!-- submit button -->
+    <div class="inputInfo">
+      <button class="btn btn-outline-danger" type="submit" >Register</button>
+    </div>
+  </div>
+
+
+</form>
+
+
+
+{% endblock %}

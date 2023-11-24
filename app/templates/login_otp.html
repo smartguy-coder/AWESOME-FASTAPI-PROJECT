@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+
+{% block content %}
+<form method="post" action="/api/register-otp-final">
+    <!-- otp password -->
+
+
+    <div class="inputInfo">
+        <div>
+            {% if warning %}
+            <label>{{ warning }}</label>
+            {% endif %}
+        </div>
+        <div>
+            <label id="otpLabel2">Password</label>
+            <input id="otp_password_input" name="otp_password_input" placeholder="" value="">
+        </div>
+    </div>
+
+
+    <!-- submit button -->
+    <div class="inputInfo">
+        <button class="btn btn-outline-danger" type="submit" >Check otp</button>
+    </div>
+
+
+
+</form>
+
+
+
+{% endblock %}
