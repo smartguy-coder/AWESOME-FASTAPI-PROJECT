@@ -4,7 +4,7 @@ Here there are all examples and explanations how to create your own documentatio
 ## Adding text
 To add text you need you just write it without any brackets in .md file
 ## Adding photos
-To add image you need to write : `<img src="img/example.png">`
+To add image you need to write : `<img src="img/example.png">` or `![Screenshot](img/example.png)`
 
 <img src="img/avatar.jpg">
 
