@@ -1,22 +1,33 @@
 import os
-from typing import Union
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from datetime import datetime
-from typing import List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
 
 class Settings(BaseSettings):
     APP_NAME: str = "Awesome API"
     SENTRY_SDK_DSN: str
     CURRENT_APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
-    USER:str
-    PASSWORD:str
+
+    # MongoDB settings
+    MONGODB_USER: str
+    MONGODB_PASSWORD: str
+    MONGODB_URI: str
+    MONGODB_DB_STORIES: str = 'stories'
+    MONGODB_COLLECTION_STORIES: str = 'user_stories'
+
+    @property
+    def MONGODB_URI_FINAL(self) -> str:
+        return self.MONGODB_URI.format(mongodb_user=self.MONGODB_USER, mongodb_password=self.MONGODB_PASSWORD)
+
     # in order to place settings with the main file we dynamically get path to .env
     model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), '.env'))
 
 
 settings = Settings()
+
 
 class Item(BaseModel):
     names: dict = {
@@ -35,9 +46,5 @@ class Item(BaseModel):
             "version": self.version,
             "date": self.date.isoformat(),
         }
-class Story(BaseModel):
-    story_id: str
-    text: str = Field("Story", description="Text of the story")
-    title: str = Field("Story Title", description="Title of the story")
-    tags: List[str] = Field([], description="List of tags")
-    utc_time: datetime = Field(default_factory=datetime.utcnow, description="UTC time of the story creation")
+
+

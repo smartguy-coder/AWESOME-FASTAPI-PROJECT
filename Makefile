@@ -57,6 +57,6 @@ run:
 	uvicorn app.main:app --reload --port 8000
 
 
-.PHONY: mkdocs
-mkdocs:
+.PHONY: docs
+docs:
 	mkdocs serve -a 127.0.0.1:12000
