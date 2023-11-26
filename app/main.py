@@ -1,4 +1,5 @@
 import sentry_sdk
+import uvicorn
 from fastapi import FastAPI
 
 from app.api import api_router
@@ -21,4 +22,4 @@ app.include_router(api_router.router)
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
 
 if __name__ == "__main__":
-    uvicorn.run('main:app', reload=True)
+    uvicorn.run("main:app", reload=True)

@@ -1,10 +1,9 @@
 import os
 from datetime import datetime
 
+from dotenv import load_dotenv
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-from dotenv import load_dotenv
 
 # for working in debug mode
 load_dotenv()
