@@ -19,3 +19,6 @@ app.include_router(api_router.router)
 
 # TODO: temporary disable to check regular web endpoints. In future useful for REACT
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
+
+if __name__ == "__main__":
+    uvicorn.run('main:app', reload=True)
