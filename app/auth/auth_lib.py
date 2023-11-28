@@ -1,21 +1,17 @@
-import jwt
-
-from fastapi import HTTPException, status
-from passlib.context import CryptContext
 from datetime import datetime, timedelta
 
+import jwt
+from passlib.context import CryptContext
 from pydantic import EmailStr
 
 from app import settings
 
 
-# from dao import get_user_by_login
-
 
 class AuthHandler:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    secret = settings.Settings.TOKEN_SECRET
-    algorithm = settings.Settings.TOKEN_ALGORITHM
+    secret = settings.settings.TOKEN_SECRET
+    algorithm = settings.settings.TOKEN_ALGORITHM
 
     @classmethod
     async def get_password_hash(cls, password: str) -> str:
@@ -34,29 +30,13 @@ class AuthHandler:
             'is_authorised': is_authorised
 
         }
-        return jwt.encode(payload, cls.secret, algorithm="HS256")
-        # return jwt.encode(
-        #     payload,
-        #     cls.secret,
-        #     algorithm=cls.algorithm,
-        # )
-
-    # @classmethod
-    # async def decode_token(cls, token: str) -> dict:
-    #     # jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
-    #     try:
-    #         payload = jwt.decode(token, cls.secret , algorithms=["HS256"])
-    #         return payload
-    #     except jwt.ExpiredSignatureError:
-    #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Signature has expired')
-    #     except jwt.InvalidTokenError:
-    #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid token')
+        return jwt.encode(payload, cls.secret, cls.algorithm)
 
     @classmethod
     async def decode_token_web(cls, token: str | None) -> dict:
 
         try:
-            payload = jwt.decode(token, cls.secret, algorithms=["HS256"])
+            payload = jwt.decode(token, cls.secret, cls.algorithm)
             return payload
         except jwt.ExpiredSignatureError:
             return {}
@@ -70,9 +50,8 @@ class AuthLibrary:
     async def authenticate_user(cls, login: EmailStr, password: str):
         from dao import get_user_by_login
         user = await get_user_by_login(login)
+
         if not (user and await AuthHandler.verify_password(password, user.password)):
-            raise HTTPException(
-                status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                detail=f'Incorrect login "{login}" or password'
-            )
+            return False
+
         return user

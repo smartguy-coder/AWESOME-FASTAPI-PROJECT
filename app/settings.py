@@ -1,31 +1,29 @@
 import os
 from datetime import datetime
-from typing import Union
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 load_dotenv()
 
 
-class Settings:
-    DATABASE_NAME = os.getenv('DATABASE_NAME', '')
-    DATABASE_USER = os.getenv('DATABASE_USER', '')
-    DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', '')
-    DATABASE_HOST = os.getenv('DATABASE_HOST', '')
-    DATABASE_PORT = os.getenv('DATABASE_PORT', '')
+class Settings(BaseSettings):
+    DATABASE_NAME: str = os.getenv('DATABASE_NAME', '')
+    DATABASE_USER: str = os.getenv('DATABASE_USER', '')
+    DATABASE_PASSWORD: str = os.getenv('DATABASE_PASSWORD', '')
+    DATABASE_HOST: str = os.getenv('DATABASE_HOST', '')
+    DATABASE_PORT: int = os.getenv('DATABASE_PORT', '')
+    MAX_NOTES_LENGTH: int = 200
+    TOKEN_SECRET: str = os.getenv('TOKEN_SECRET') or ''
+    TOKEN_ALGORITHM: str = os.getenv('TOKEN_ALGORITHM') or ''
 
-    TOKEN_SECRET = os.getenv('TOKEN_SECRET') or ''
-    TOKEN_ALGORITHM = os.getenv('TOKEN_ALGORITHM') or ''
-
-    APP_NAME = "Awesome API"
-    SENTRY_SDK_DSN = ''
+    APP_NAME: str = "Awesome API"
+    SENTRY_SDK_DSN: str
     CURRENT_APP_VERSION: str = "0.1.0"
     DEBUG: bool = True
 
-    MIN_PASSWORD_LENGTH = 8
-
+    MIN_PASSWORD_LENGTH: int = 8
 
     @property
     def DATABASE_URL(self):
@@ -53,5 +51,3 @@ class Item(BaseModel):
             "version": self.version,
             "date": self.date.isoformat(),
         }
-
-

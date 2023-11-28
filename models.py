@@ -1,11 +1,12 @@
 import datetime
+import uuid
 
 from sqlalchemy import (
-    Column, Integer, Float, String, DateTime, Boolean,
-    ForeignKey, BINARY, LargeBinary, UUID
+    Column, Integer, String, DateTime, Boolean,
+    UUID
 )
+
 from database import Base
-import uuid
 
 
 class BaseInfoMixin:

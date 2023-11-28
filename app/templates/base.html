@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 
 
     {% block title %}
@@ -24,17 +24,17 @@
 <body>
 
 <div class="header" id="myHeader">
-        <div class="header-right">
-            <a href="/api/menu">Menu</a>
-            {% if user_id %}
-            <a href="/api/logout">Log out</a>
-            {% else %}
-            <a href="/api/register">Sign up</a>
-            <a href="/api/login">Log in </a>
+    <div class="header-right">
+        <a href="/api/menu">Menu</a>
+        {% if user_id %}
+        <a href="/api/logout">Log out</a>
+        {% else %}
+        <a href="/api/register">Sign up</a>
+        <a href="/api/login">Log in </a>
 
-            {% endif %}
-        </div>
+        {% endif %}
     </div>
+</div>
 
 
 {% block content %}

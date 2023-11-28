@@ -1,7 +1,7 @@
-from fastapi import Request, HTTPException, status, Depends
+from fastapi import Request, Depends
 
-from app.auth import auth_lib
 import dao
+from app.auth import auth_lib
 
 
 async def get_token_web(request: Request):

@@ -6,10 +6,10 @@
 
 a
 {% block content %}
-<form method="post" action="/api/register-otp-final">
+<form action="/api/register-otp-final" method="post">
     <!-- Qr code-->
     <div class="inputInfo">
-      <label id="otpLabel">Scan qr here:</label>
+        <label id="otpLabel">Scan qr here:</label>
     </div>
     <div class="inputInfo">
         <img src="/app/templates/qr_images/qrcode_{{user_id}}.png">
@@ -33,13 +33,11 @@ a
 
     <!-- submit button -->
     <div class="inputInfo">
-        <button class="btn btn-outline-danger" type="submit" >Check otp</button>
+        <button class="btn btn-outline-danger" type="submit">Check otp</button>
     </div>
 
 
-
 </form>
-
 
 
 {% endblock %}

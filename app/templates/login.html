@@ -6,34 +6,35 @@
 
 
 {% block content %}
-<form method="post" action="/api/login-final">
+<form action="/api/login-final" method="post">
     <div>
-    <!-- Email-->
-    <div class="inputInfo">
-      <label for="user_login" class="form-label">Email</label>
-      <input name="user_login" type="email" class="sendRegisterData" id="user_login" placeholder="example@gmail.com" value=""
-        required>
+        <!-- Email-->
+        <div class="inputInfo">
+            <label class="form-label" for="user_login">Email</label>
+            <input class="sendRegisterData" id="user_login" name="user_login" placeholder="example@gmail.com"
+                   required type="email"
+                   value="">
+        </div>
+        <!-- Password -->
+        <div>
+            {% if warning %}
+            <label>{{ warning }}</label>
+            {% endif %}
+        </div>
+        <div class="inputInfo">
+            <label class="form-label">Password</label>
+            <input class="sendRegisterData" id="password" name="password" placeholder="Password12345" required
+                   type="password"
+                   value="">
+        </div>
+        <!-- submit button -->
+        <div class="inputInfo">
+            <button class="btn btn-outline-danger" type="submit">Log in</button>
+        </div>
     </div>
-    <!-- Password -->
-    <div>
-    {% if warning %}
-        <label>{{ warning }}</label>
-    {% endif %}
-    </div>
-    <div class="inputInfo">
-      <label class="form-label">Password</label>
-      <input name="password" type="password" class="sendRegisterData" id="password" placeholder="Password12345" value=""
-        required>
-    </div>
-    <!-- submit button -->
-    <div class="inputInfo">
-      <button class="btn btn-outline-danger" type="submit" >Log in</button>
-    </div>
-  </div>
 
 
 </form>
-
 
 
 {% endblock %}

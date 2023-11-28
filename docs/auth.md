@@ -1,4 +1,5 @@
 # User sing up
+
 1. `/api/register/` sends `register.html` to user in `api_router`
 2. from `register.html` user data goes to `/api/register-final/`
 3. in `/api/register-final/`:
@@ -11,6 +12,7 @@
     * check otp password in `otp.py`
     * setting cookie in website
     * redirecting user to `/api/menu`
+
 # User log in
 
 1. `/api/login/` sends `login.html` to user
@@ -25,4 +27,5 @@
     * redirecting user to `/api/menu`
 
 # User log out
+
 Deleting cookie

@@ -6,48 +6,50 @@
 
 
 {% block content %}
-<form method="post" action="/api/register-final">
+<form action="/api/register-final" method="post">
 
-  <!--Name-->
-  <div>
-    <div class="inputInfo">
-      <label style="text-align: center;" for="name" class="form-label">First name:</label>
-      <input name="name" type="text" class="sendRegisterData" id="name" placeholder="Name" value="" required>
-    </div>
+    <!--Name-->
+    <div>
+        <div class="inputInfo">
+            <label class="form-label" for="name" style="text-align: center;">First name:</label>
+            <input class="sendRegisterData" id="name" name="name" placeholder="Name" required type="text" value="">
+        </div>
 
-    <!-- Email-->
-    <div class="inputInfo">
-      <label for="user_login" class="form-label">Email</label>
-      <input name="user_login" type="email" class="sendRegisterData" id="user_login" placeholder="example@gmail.com" value=""
-        required>
-    </div>
-    <!-- Password -->
-    {% if warning %}
+        <!-- Email-->
+        <div class="inputInfo">
+            <label class="form-label" for="user_login">Email</label>
+            <input class="sendRegisterData" id="user_login" name="user_login" placeholder="example@gmail.com"
+                   required type="email"
+                   value="">
+        </div>
+        <!-- Password -->
+        {% if warning %}
         <label>{{ warning }}</label>
-    {% endif %}
-    <div class="inputInfo">
-      <label class="form-label">Password</label>
-      <input name="password" type="password" class="sendRegisterData" id="password" placeholder="Password12345" value=""
-        required>
-    </div>
-    <!-- Password 2-->
+        {% endif %}
+        <div class="inputInfo">
+            <label class="form-label">Password</label>
+            <input class="sendRegisterData" id="password" name="password" placeholder="Password12345" required
+                   type="password"
+                   value="">
+        </div>
+        <!-- Password 2-->
 
-    <div class="inputInfo">
-      <label class="form-label">Password confirmation</label>
-      <input name="password2" type="password" class="sendRegisterData" id="password2" placeholder="Password12345" value=""
-        required>
-    </div>
+        <div class="inputInfo">
+            <label class="form-label">Password confirmation</label>
+            <input class="sendRegisterData" id="password2" name="password2" placeholder="Password12345" required
+                   type="password"
+                   value="">
+        </div>
 
 
-    <!-- submit button -->
-    <div class="inputInfo">
-      <button class="btn btn-outline-danger" type="submit" >Register</button>
+        <!-- submit button -->
+        <div class="inputInfo">
+            <button class="btn btn-outline-danger" type="submit">Register</button>
+        </div>
     </div>
-  </div>
 
 
 </form>
-
 
 
 {% endblock %}

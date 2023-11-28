@@ -1,6 +1,7 @@
 import datetime
 
 from sqlalchemy import insert, select, update
+
 from database import async_session_maker
 from models import User
 
@@ -13,7 +14,7 @@ async def create_user(
     async with async_session_maker() as session:
         query = insert(User).values(
             name=name,
-            login=login,
+            login=login.lower(),
             password=password,
 
         ).returning(User.id, User.login, User.name)
@@ -45,22 +46,24 @@ async def get_user_login_by_id(user_id: int) -> list:
 
 async def get_user_by_login(user_login: str) -> list:
     async with async_session_maker() as session:
-        query = select(User).filter_by(login=user_login)
+        query = select(User).filter_by(login=user_login.lower())
         result = await session.execute(query)
         return result.scalar_one_or_none()
 
 
 async def get_user_id_by_login(user_login: str) -> int:
     async with async_session_maker() as session:
-        query = select(User).filter_by(login=user_login)
+        query = select(User).filter_by(login=user_login.lower())
         result = await session.execute(query)
-        return result.scalar_one_or_none().id
+        result = result.scalar_one_or_none()
+        if result:
+            return result.id
+        return False
 
 
 async def get_user_uuid_by_id(user_idd: int):
     async with async_session_maker() as session:
         query = select(User).filter_by(id=user_idd)
-        print(query)
         result = await session.execute(query)
         return result.scalar_one_or_none().user_uuid
 
@@ -68,7 +71,7 @@ async def get_user_uuid_by_id(user_idd: int):
 async def update_user_last_login(user_id: int):
     async with async_session_maker() as session:
         query = update(User).where(User.id == user_id).values(last_login=datetime.datetime.utcnow())
-        print(query)
+
         await session.execute(query)
         await session.commit()
 
@@ -98,8 +101,4 @@ async def main():
     await update_user_last_login(11)
     # print(await get_user_id_by_login('yaroslavshym@gamail.com'))
 
-
-
-
 # asyncio.run(main())
-

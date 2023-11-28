@@ -1,19 +1,19 @@
 from fastapi import APIRouter, Request, Form, Depends
-from fastapi_versioning import version
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi_versioning import version
+from pydantic import EmailStr
 
 from app import settings
-from dao import get_user_by_login, create_user, get_user_id_by_login, get_user_uuid_by_id
-from app.settings import Item
-from pydantic import EmailStr
-from app.auth.otp import create_qr, verify_otp
 from app.auth.auth_lib import AuthHandler, AuthLibrary
 from app.auth.dependencies import get_current_user_id_optional
+from app.auth.otp import create_qr, verify_otp
+from app.settings import Item
+from dao import create_user, get_user_id_by_login, get_user_uuid_by_id
 
 router = APIRouter(
     prefix='/api',
-    tags=['landing'],
+    tags=['menu'],
 )
 templates = Jinja2Templates(directory='app//templates')
 
@@ -68,11 +68,10 @@ async def about(request: Request, check_id=Depends(check_register)) -> dict:
 @router.get('/register')
 @version(1)
 async def register(request: Request):
-
     context = {
         'request': request,
         'title': 'Sign up',
-        'min_password_length': settings.Settings.MIN_PASSWORD_LENGTH,
+        'min_password_length': settings.settings.MIN_PASSWORD_LENGTH,
     }
 
     return templates.TemplateResponse(
@@ -93,7 +92,7 @@ async def register_final(request: Request,
         context = {
             'request': request,
             'title': 'Sign up',
-            'min_password_length': settings.Settings.MIN_PASSWORD_LENGTH,
+            'min_password_length': settings.settings.MIN_PASSWORD_LENGTH,
             'warning': 'Passwords are not same!',
         }
 
@@ -101,12 +100,12 @@ async def register_final(request: Request,
             'register.html',
             context=context,
         )
-    is_login_already_used = await get_user_by_login(user_login)
+    is_login_already_used = await get_user_id_by_login(user_login)
     if is_login_already_used:
         context = {
             'request': request,
             'title': 'Sign up',
-            'min_password_length': settings.Settings.MIN_PASSWORD_LENGTH,
+            'min_password_length': settings.settings.MIN_PASSWORD_LENGTH,
             'warning': 'Login is already used!',
         }
         return templates.TemplateResponse(
@@ -117,7 +116,8 @@ async def register_final(request: Request,
     user_data = await create_user(
         name=name,
         login=user_login,
-        password=hashed_password,)
+        password=hashed_password,
+    )
     user_id = await get_user_id_by_login(user_login)
     token = str(await AuthHandler.encode_token(user_id, False))
     user_uuid_str = str(await get_user_uuid_by_id(user_id))
@@ -140,9 +140,7 @@ async def register_final(request: Request,
 async def register_otp_final(request: Request,
                              otp_password_input: int = Form(),
                              user_id=Depends(get_current_user_id_optional),
-                             check_id = Depends(check_register),
                              ):
-    
     user_uuid_str = str(await get_user_uuid_by_id(user_id))
     is_correct = await verify_otp(otp_password_input, user_uuid_str)
     if not is_correct:
@@ -181,20 +179,28 @@ async def login(request: Request):
 @router.post('/login-final')
 async def register_final(request: Request,
                          user_login: EmailStr = Form(),
-                         password: str = Form(),):
-    if not AuthLibrary.authenticate_user(user_login, password):
+                         password: str = Form(), ):
+    def return_redirect_login_or_password():
         context = {
             'request': request,
-            'title': 'Sign up',
-            'min_password_length': settings.Settings.MIN_PASSWORD_LENGTH,
-            'warning': 'Log in or password is not working!',
+            'title': 'Log in',
+            'min_password_length': settings.settings.MIN_PASSWORD_LENGTH,
+            'warning': 'Log in or password is not correct!',
         }
         return templates.TemplateResponse(
             'login.html',
-            context=context,
-        )
-    user_id = await get_user_id_by_login(user_login)
+            context=context, )
+
+    try:
+        user_id = await get_user_id_by_login(user_login)
+    except AttributeError:
+        return return_redirect_login_or_password()
+
+    if not AuthLibrary.authenticate_user(user_login, password):
+        return return_redirect_login_or_password()
+
     token = await AuthHandler.encode_token(user_id, False)
+
     context = {
         'request': request,
         'title': 'Log in using otp',
@@ -213,34 +219,33 @@ async def register_final(request: Request,
 @router.post('/login-otp-final')
 @version(1)
 async def register_otp_final(request: Request,
-                             otp_password_input: int = Form(),):
-    user = Depends(await get_current_user_id_optional(request))
-    user_uuid_str = str(await get_user_uuid_by_id(user.id))
+                             otp_password_input: int = Form(),
+                             user_id=Depends(get_current_user_id_optional), ):
+    user_uuid_str = str(await get_user_uuid_by_id(user_id))
     is_correct = await verify_otp(otp_password_input, user_uuid_str)
     if not is_correct:
         context = {
             'request': request,
             'title': 'Otp authentication!',
             'warning': 'Otp password is not correct',
-            'user': user,
+            'user_id': user_id,
         }
 
         response = templates.TemplateResponse(
             'login_otp.html',
             context=context,
         )
-        token = await AuthHandler.encode_token(user.id, False)
+        token = await AuthHandler.encode_token(user_id, False)
         response.set_cookie(key='token', value=token, httponly=True)
         return response
-    response = RedirectResponse('/api/register', status_code=302, headers=None, background=None)
-    token = await AuthHandler.encode_token(user.id, True)
+    response = RedirectResponse('/api/menu', status_code=302, headers=None, background=None)
+    token = await AuthHandler.encode_token(user_id, True)
     response.set_cookie(key='token', value=token, httponly=True)
     return response
 
 
 @router.get('/logout')
 async def logout(request: Request):
-    response = RedirectResponse('/api/register', status_code=302, headers=None, background=None)
+    response = RedirectResponse('/api/menu', status_code=302, headers=None, background=None)
     response.delete_cookie('token')
     return response
-
