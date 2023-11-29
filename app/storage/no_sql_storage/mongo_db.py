@@ -4,10 +4,11 @@
 # from datetime import datetime
 # from uuid import UUID, uuid4
 # from pymongo import MongoClient
-from typing import Any
+from typing import Any, Optional, List
 
 from pydantic import BaseModel
 
+from app import shemas
 from app.settings import settings
 # from fastapi.responses import JSONResponse
 # from pydantic import BaseModel, Field
@@ -34,6 +35,14 @@ class MongoDBStorage:
         search_params = {field: value}
         result = await collection.find_one(search_params)
         return result or {}
+
+    async def get_latest_stories(self, collection) -> List[shemas.StorySaved]:
+        latest_stories = collection.find().sort([("_id", -1)]).limit(10)
+        stories = []
+        async for story in latest_stories:
+            story['_id'] = str(story['_id'])
+            stories.append(story)
+        return stories
 
 mongo_storage = MongoDBStorage()
 

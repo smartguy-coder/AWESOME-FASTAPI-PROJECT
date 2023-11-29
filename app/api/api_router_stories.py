@@ -18,8 +18,8 @@ async def add_story_post(story: shemas.StoryNew, background_tasks: BackgroundTas
     return saved_story
 
 
-@router.get("/{story_id}")
-async def add_story_post(story_id: str) -> shemas.StorySaved:
+@router.get("/id/{story_id}")
+async def find_story_post(story_id: str) -> shemas.StorySaved:
     collection = await mongo_db.mongo_storage.get_user_stories_collection()
     data = await mongo_db.mongo_storage.find_one_document(collection, 'story_id', story_id)
 
@@ -30,3 +30,10 @@ async def add_story_post(story_id: str) -> shemas.StorySaved:
         return shemas.StorySaved(**data)
     except ValidationError:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Story missing required fields")
+
+@router.get("/latest")
+async def get_latest_stories():
+    collection = await mongo_db.mongo_storage.get_user_stories_collection()
+    data = await mongo_db.mongo_storage.get_latest_stories(collection)
+
+    return data
