@@ -1,8 +1,7 @@
 import os
-from datetime import datetime
 from functools import lru_cache
+
 from dotenv import load_dotenv
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # for working in debug mode
@@ -25,22 +24,3 @@ def get_settings():
 
 
 settings = get_settings()
-
-
-class Item(BaseModel):
-    names: dict = {
-        "name": "default_name",
-        "description": "default_description",
-        "description1": "default_description1",
-        "description2": "default_description2",
-        "description3": "default_description3",
-    }
-    version: str = "0.1.0"
-    date: datetime = datetime.now()
-
-    def to_dict(self):
-        return {
-            "names": self.names,
-            "version": self.version,
-            "date": self.date.isoformat(),
-        }
