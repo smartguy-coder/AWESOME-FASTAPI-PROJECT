@@ -31,9 +31,10 @@ class Settings(BaseSettings):
     # model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
 
 
-@lru_cache
-def get_settings():
-    return Settings()
+# @lru_cache
+# def get_settings():
+#     return Settings()
 
 
-settings = get_settings()
+# settings = get_settings()
+settings = Settings()
