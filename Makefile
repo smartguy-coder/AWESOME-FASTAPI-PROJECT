@@ -54,7 +54,7 @@ install-dev:  # make install-dev package='pytest'
 ################################################################################
 .PHONY: run
 run:
-	uvicorn app.main:app --reload --port 8003
+	uvicorn app.main:app --reload --port 8000
 
 
 .PHONY: docs
@@ -67,3 +67,4 @@ check-fix-code:
 	black .
 	isort .
 	flake8 .
+	pytest -v -s .
