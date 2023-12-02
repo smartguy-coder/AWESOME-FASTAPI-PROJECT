@@ -1,10 +1,11 @@
-# import os
-# from functools import lru_cache
+import os
+from functools import lru_cache
 
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# from pydantic_settings import BaseSettings, SettingsConfigDict
+# from pydantic_settings import BaseSettings
+
 
 # for working in debug mode
 load_dotenv()
@@ -28,13 +29,13 @@ class Settings(BaseSettings):
         return self.MONGODB_URI.format(mongodb_user=self.MONGODB_USER, mongodb_password=self.MONGODB_PASSWORD)
 
     # in order to place settings with the main file we dynamically get path to .env
-    # model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
+    model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
 
 
-# @lru_cache
-# def get_settings():
-#     return Settings()
+@lru_cache
+def get_settings():
+    return Settings()
 
 
-# settings = get_settings()
-settings = Settings()
+settings = get_settings()
+# settings = Settings()
