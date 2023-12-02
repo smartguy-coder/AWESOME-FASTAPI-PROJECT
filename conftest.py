@@ -1,4 +1,5 @@
 import asyncio
+import datetime as dt
 
 import pytest
 from fastapi.testclient import TestClient
@@ -17,9 +18,9 @@ def client():
 @pytest.fixture(scope="class")
 def new_story() -> StoryNew:
     test_story = StoryNew(
-        author="Test author",
-        title="Test title",
-        text="Test text",
+        author="Test author CI-CD",
+        title="Test title CI-CD",
+        text=f"Test text CI-CD at {dt.datetime.utcnow()}",
     )
     return test_story
 
