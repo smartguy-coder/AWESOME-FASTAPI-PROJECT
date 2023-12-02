@@ -27,7 +27,7 @@ jobs:
           installer-parallel: true
 
       - name: Set secrets
-        run: @echo "Setting secrets 🔐"
+        run: echo "Setting secrets 🔐"
         env:
           SENTRY_SDK_DSN: ${{ secrets.SENTRY_SDK_DSN }}
           MONGODB_USER: ${{ secrets.MONGODB_USER }}
