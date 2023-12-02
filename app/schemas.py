@@ -1,8 +1,9 @@
 from datetime import datetime
-from app.utils import utils_library
 
 from pydantic import BaseModel, Field
+
 from app.constants import Tags
+from app.utils import utils_library
 
 
 class StoryNew(BaseModel):

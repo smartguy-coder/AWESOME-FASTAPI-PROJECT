@@ -1,8 +1,54 @@
-site_name: FASTAPI_PROJECT
+#https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/
+
+site_name: FASTAPI PROJECT
+
 nav:
   - Guide: index.md
   - Authentication: auth.md
   - Deploy: deploy.md
   - Database : db_connection.md
   - Used Ports: used_ports.md
-  - Actions: action.md
+  - CI/CD: action.md
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: indigo
+      accent: pink
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+      primary: indigo
+      accent: pink
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/smartguy-coder/AWESOME-FASTAPI-PROJECT
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/vasyl-kartychak-63660b220/
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+copyright: |
+  &copy; 2023 <a href="https://github.com/smartguy-coder/AWESOME-FASTAPI-PROJECT"  target="_blank" rel="noopener">Source code</a>

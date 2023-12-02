@@ -18,8 +18,8 @@ class Settings(BaseSettings):
     MONGODB_USER: str
     MONGODB_PASSWORD: str
     MONGODB_URI: str
-    MONGODB_DB_STORIES: str = 'stories'
-    MONGODB_COLLECTION_STORIES: str = 'user_stories'
+    MONGODB_DB_STORIES: str = "stories"
+    MONGODB_COLLECTION_STORIES: str = "user_stories"
 
     @property
     def MONGODB_URI_FINAL(self) -> str:

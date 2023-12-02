@@ -1,5 +1,5 @@
+from app.schemas import StorySaved
 from app.storage.no_sql_storage import mongo_db
-from app.shemas import StorySaved
 
 
 async def write_story_into_mongodb(saved_story: StorySaved) -> None:

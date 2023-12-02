@@ -1,21 +1,9 @@
-# from fastapi import FastAPI, HTTPException, APIRouter
-# from pydantic import BaseModel
-# from typing import List, Optional
-# from datetime import datetime
-# from uuid import UUID, uuid4
-# from pymongo import MongoClient
-from typing import Any, Optional, List
+from typing import Any, List
 
-from pydantic import BaseModel
-
-from app import shemas
-from app.settings import settings
-# from fastapi.responses import JSONResponse
-# from pydantic import BaseModel, Field
-# from typing import List
-# from datetime import datetime
-# from uuid import uuid4
 from motor import motor_asyncio
+
+from app import schemas
+from app.settings import settings
 
 
 class MongoDBStorage:
@@ -36,26 +24,13 @@ class MongoDBStorage:
         result = await collection.find_one(search_params)
         return result or {}
 
-    async def get_latest_stories(self, collection) -> List[shemas.StorySaved]:
+    async def get_latest_stories(self, collection) -> List[schemas.StorySaved]:
         latest_stories = collection.find().sort([("_id", -1)]).limit(10)
         stories = []
         async for story in latest_stories:
-            story['_id'] = str(story['_id'])
+            story["_id"] = str(story["_id"])
             stories.append(story)
         return stories
 
+
 mongo_storage = MongoDBStorage()
-
-
-# # Ендпоінт для отримання історій з можливістю фільтрації
-# @router.get("/get_stories", response_model=List[dict])
-# def get_stories(skip: int = 0, query: Optional[str] = None):
-#     if query:
-#         stories = collection.find({"$or": [
-#             {"text": {"$regex": query, "$options": "i"}},
-#             {"title": {"$regex": query, "$options": "i"}}
-#         ]}).skip(skip).limit(10)
-#     else:
-#         stories = collection.find().skip(skip).limit(10)
-#
-#     return list(stories)
