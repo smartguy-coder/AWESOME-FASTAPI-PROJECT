@@ -26,15 +26,22 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
+      - name: Set secrets
+        env:
+          SENTRY_SDK_DSN: ${{ secrets.SENTRY_SDK_DSN }}
+          MONGODB_USER: ${{ secrets.MONGODB_USER }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_STORIES: ${{ secrets.MONGODB_DB_STORIES }}
       #----------------------------------------------
       #       load cached venv if cache exists
       #----------------------------------------------
-#      - name: Load cached venv
-#        id: cached-poetry-dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: .venv
-#          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
