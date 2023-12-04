@@ -20,12 +20,11 @@ async def add_story_post(story: schemas.StoryNew, background_tasks: BackgroundTa
 
 @router.get("/id/{story_id}")
 async def find_story_post(story_id: str) -> schemas.StorySaved:
-    collection = await mongo_db.mongo_storage.get_user_stories_collection()
+    collection = await mongo_db.mongo_storage.get_user_stories_collection_sync()
     data = await mongo_db.mongo_storage.find_one_document(collection, "story_id", story_id)
 
     if not data:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Story not found")
-
     try:
         return schemas.StorySaved(**data)
     except ValidationError:
@@ -37,7 +36,7 @@ async def find_story_post(story_id: str) -> schemas.StorySaved:
 
 @router.get("/latest")
 async def get_latest_stories():
-    collection = await mongo_db.mongo_storage.get_user_stories_collection()
+    collection = await mongo_db.mongo_storage.get_user_stories_collection_async()
     data = await mongo_db.mongo_storage.get_latest_stories(collection)
 
     return data
