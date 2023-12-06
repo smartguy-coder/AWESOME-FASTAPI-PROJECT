@@ -4,9 +4,6 @@ from functools import lru_cache
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# from pydantic_settings import BaseSettings
-
-
 # for working in debug mode
 load_dotenv()
 

@@ -3,6 +3,7 @@ from fastapi import status
 from httpx import AsyncClient
 
 from app.main import app
+from app.utils import utils_library
 
 
 class TestAddStory:
@@ -38,7 +39,14 @@ class TestAddStory:
         assert data["text"] == self.story.text
         assert data["title"] == self.story.title
 
-    async def test_find_story_no_id(self):
+    async def test_find_created_story_wrong_id(self):
+        url = self.URL_FIND_ONE_STORY.format(story_id=utils_library.create_str_uuid4())
+        async with AsyncClient(app=app, base_url=self.base_url) as ac:
+            response = await ac.get(url)
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.json() == {"detail": "Story not found"}
+
+    async def test_find_story_wrong_path(self):
         url = self.URL_FIND_ONE_STORY.split("{")[0]
         async with AsyncClient(app=app, base_url=self.base_url) as ac:
             response = await ac.get(url)

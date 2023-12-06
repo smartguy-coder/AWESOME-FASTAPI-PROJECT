@@ -19,6 +19,6 @@ app.include_router(api_router_stories.router)
 # TODO: temporary disable to check regular web endpoints. In future useful for REACT
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # useful for debug mode
-    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)  # pragma: no cover

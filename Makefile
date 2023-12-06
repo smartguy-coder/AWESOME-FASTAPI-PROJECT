@@ -67,4 +67,5 @@ check-fix-code:
 	black .
 	isort .
 	flake8 .
-	pytest -v -s .
+	pytest -v -s --cov='.'
+	coverage html --omit="*/test*" -d tests/coverage
