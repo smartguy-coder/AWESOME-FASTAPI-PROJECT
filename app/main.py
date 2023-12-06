@@ -20,4 +20,5 @@ app.include_router(api_router_stories.router)
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    # useful for debug mode
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)

@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 import pymongo
 from motor import motor_asyncio
@@ -8,6 +8,9 @@ from app.settings import settings
 
 
 class MongoDBStorage:
+    # for some reasons async collection fail in tests, so we use sync func
+    # so self.__getattribute__(f"{collection.name}_collection_sync")() allows us to use for tests sync version
+
     def __init__(self):
         self.uri = settings.MONGODB_URI_FINAL
         self.mongo_client_async = motor_asyncio.AsyncIOMotorClient(self.uri)
@@ -20,7 +23,7 @@ class MongoDBStorage:
         collection = self.db_async[settings.MONGODB_COLLECTION_STORIES]
         return collection
 
-    async def get_user_stories_collection_sync(self):
+    async def user_stories_collection_sync(self):
         collection = self.db_sync[settings.MONGODB_COLLECTION_STORIES]
         return collection
 
@@ -28,18 +31,21 @@ class MongoDBStorage:
         await collection.insert_one(payload)
 
     async def find_one_document(self, collection, field: str, value: Any) -> dict:
-        # for some reasons async collection fail in tests
         search_params = {field: value}
-        result = collection.find_one(search_params)
+        try:
+            result = await collection.find_one(search_params)
+        except RuntimeError:
+            collection = await self.__getattribute__(f"{collection.name}_collection_sync")()
+            result = collection.find_one(search_params)
         return result or {}
 
-    async def get_latest_stories(self, collection) -> List[schemas.StorySaved]:
-        latest_stories = collection.find().sort([("_id", -1)]).limit(10)
-        stories = []
-        async for story in latest_stories:
-            story["_id"] = str(story["_id"])
-            stories.append(story)
-        return stories
+    async def get_latest_stories(self, collection, limit: int, skip: int) -> list[schemas.StorySaved]:
+        try:
+            latest_stories = await collection.find().sort([("_id", -1)]).limit(limit).skip(skip).to_list(length=limit)
+        except RuntimeError:
+            collection = await self.__getattribute__(f"{collection.name}_collection_sync")()
+            latest_stories = collection.find().sort([("_id", -1)]).limit(limit).skip(skip)
+        return latest_stories
 
 
 mongo_storage = MongoDBStorage()
