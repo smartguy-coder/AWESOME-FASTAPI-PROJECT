@@ -1,0 +1,6 @@
+[report]
+
+exclude_lines =
+    pragma: no cover
+    if __name__\s*==\s*['"]__main__['"]\s*:
+          uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)

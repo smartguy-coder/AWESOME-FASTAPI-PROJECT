@@ -57,8 +57,8 @@ run:
 	uvicorn app.main:app --reload --port 8000
 
 
-.PHONY: mkdocs
-mkdocs:
+.PHONY: docs
+docs:
 	mkdocs serve -a 127.0.0.1:12000
 
 .PHONY: check-fix-code
@@ -67,3 +67,5 @@ check-fix-code:
 	black .
 	isort .
 	flake8 .
+	pytest -v -s --cov='.'
+	coverage html --omit="*/test*" -d tests/coverage

@@ -25,7 +25,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-
       #----------------------------------------------
       #       load cached venv if cache exists
       #----------------------------------------------
@@ -49,9 +48,16 @@ jobs:
       #              run test suite
       #----------------------------------------------
       - name: Run tests
+        env:
+          SENTRY_SDK_DSN: ${{ secrets.SENTRY_SDK_DSN }}
+          MONGODB_USER: ${{ secrets.MONGODB_USER }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_SERVER: ${{ secrets.MONGODB_SERVER }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_STORIES: ${{ secrets.MONGODB_DB_STORIES }}
         run: |
           source .venv/bin/activate
           black .
           isort .
           flake8 .
-          pytest .
+          pytest -v -s .
