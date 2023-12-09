@@ -3,6 +3,7 @@ from fastapi import status
 from httpx import AsyncClient
 
 from app.main import app
+from app.storage.no_sql_storage import mongo_db
 from app.utils import utils_library
 
 
@@ -52,12 +53,24 @@ class TestAddStory:
             response = await ac.get(url)
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
+    async def test_find_inconsistent_story(self):
+        inconsistent_story = self.story.model_dump()
+        del inconsistent_story["title"]
+        inconsistent_story["story_id"] = utils_library.create_str_uuid4()
+        collection = await mongo_db.mongo_storage.get_user_stories_collection()
+        await mongo_db.mongo_storage.add_one_document(collection, inconsistent_story)
+
+        url = self.URL_FIND_ONE_STORY.format(story_id=inconsistent_story["story_id"])
+        async with AsyncClient(app=app, base_url=self.base_url) as ac:
+            response = await ac.get(url)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
 
 class TestGetStories:
     @pytest.fixture(scope="class", autouse=True)
     @classmethod
-    def setup_class(cls, new_story):
-        cls.URL_GET_STORIES: str = "/api/stories/"
+    def setup_class(cls):
+        cls.URL_GET_STORIES: str = "/api/stories"
         cls.base_url = "http://"
 
     async def test_success_get_stories(self):

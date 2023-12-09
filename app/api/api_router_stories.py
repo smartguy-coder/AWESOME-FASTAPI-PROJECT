@@ -20,7 +20,7 @@ async def add_story_post(story: schemas.StoryNew, background_tasks: BackgroundTa
 
 @router.get("/id/{story_id}")
 async def find_story_post(story_id: str) -> schemas.StorySaved:
-    collection = await mongo_db.mongo_storage.get_user_stories_collection_async()
+    collection = await mongo_db.mongo_storage.get_user_stories_collection()
     data = await mongo_db.mongo_storage.find_one_document(collection, "story_id", story_id)
 
     if not data:
@@ -35,7 +35,7 @@ async def find_story_post(story_id: str) -> schemas.StorySaved:
 
 
 @router.get(
-    "/",
+    "",
     description="Awesome description [docs](https://fastapi.tiangolo.com) from all over the world with markdown",
     response_description="some useful info for users",
 )
@@ -43,6 +43,12 @@ async def get_latest_stories(
     limit: int = Query(default=10, ge=1, le=50),
     skip: int = Query(default=0, ge=0),
 ) -> list[schemas.StorySaved]:
-    collection = await mongo_db.mongo_storage.get_user_stories_collection_async()
-    data = await mongo_db.mongo_storage.get_latest_stories(collection, limit, skip)
-    return data
+    collection = await mongo_db.mongo_storage.get_user_stories_collection()
+    stories = await mongo_db.mongo_storage.get_latest_stories(collection, limit, skip)
+    result = []
+    for story in stories:
+        try:
+            result.append(schemas.StorySaved(**story))
+        except ValidationError:
+            pass
+    return result
