@@ -52,6 +52,7 @@ jobs:
           SENTRY_SDK_DSN: ${{ secrets.SENTRY_SDK_DSN }}
           MONGODB_USER: ${{ secrets.MONGODB_USER }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_SERVER: ${{ secrets.MONGODB_SERVER }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_STORIES: ${{ secrets.MONGODB_DB_STORIES }}
         run: |
