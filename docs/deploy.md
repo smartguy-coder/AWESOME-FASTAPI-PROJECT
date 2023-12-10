@@ -5,6 +5,8 @@
 ![](img/deploy/deploy1.png)
 ![](img/deploy/deploy2.png)
 ![](img/deploy/deploy3.png)
+![](img/deploy/deploy21.png)
+
 Creation droplet done
 
 ### Connection server by password
