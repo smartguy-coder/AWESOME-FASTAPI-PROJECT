@@ -54,7 +54,7 @@ install-dev:  # make install-dev package='pytest'
 ################################################################################
 .PHONY: run
 run:
-	uvicorn app.main:app --reload --port 8000
+	uvicorn app.main:app --reload --port 8001
 
 
 .PHONY: docs

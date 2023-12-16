@@ -28,6 +28,14 @@ class Settings(BaseSettings):
             mongodb_user=self.MONGODB_USER, mongodb_password=self.MONGODB_PASSWORD, mongodb_server=self.MONGODB_SERVER,
         )
 
+    # Postgres settings
+    @property
+    def DATABASE_URL(self) -> str:
+        # dialect+driver://username:password@host:port/database
+        url = f'postgresql+asyncpg://{self.DATABASE_USER}:{self.DATABASE_PASSWORD}@' \
+              f'{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}'
+        return url
+
     # in order to place settings with the main file we dynamically get path to .env
     model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
 
