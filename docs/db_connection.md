@@ -53,5 +53,19 @@ here: <a href='https://dbeaver.io/download/' target="_blank" rel="noopener noref
 ![](img/dbeaver/step6.png)
 ![](img/dbeaver/step7.png)
 
-### Initial setting of the SQL database (for new project)
-
+### Initial setting of the alembic
+```commandline
+alembic init migrations
+```
+### After amend alembic env.py file
+```commandline
+alembic revision --autogenerate -m 'initial'
+```
+### run migration up
+```commandline
+alembic upgrade head
+```
+### run migration down with numbers of rollback
+```
+alembic downgrade -1
+```

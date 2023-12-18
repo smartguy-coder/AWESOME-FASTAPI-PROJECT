@@ -1,58 +1,55 @@
-import datetime
+import datetime as dt
 import uuid
 
-from sqlalchemy import (
-    Column, Integer, Float, String, DateTime, Boolean,
-    ForeignKey,UUID
-)
-from sqlalchemy.orm import Mapper, mapped_column
+from sqlalchemy import (UUID, Boolean, Column, DateTime, ForeignKey, Integer,
+                        String)
+from sqlalchemy.orm import mapped_column, relationship, Mapper
 
 from app.database import Base
+from app.settings import settings
 
 
 class BaseInfoMixin:
     id = Column(Integer, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    # id: Mapper[int] = mapped_column(primary_key=True)
+    created_at = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
+    # from sqlalchemy import func
+    # created_at = Column(DateTime, nullable=False, server_default=func.now())
+
+    def to_dict(self):
+        return self.__dict__
 
 
 class User(BaseInfoMixin, Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
-    name = Column(String, nullable=False)
-    login = Column(String, unique=True, index=True, nullable=False)
-    password = Column(String, nullable=False)
-    last_login = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
+    name = Column(String(settings.DB_MAX_TEXT_LENGTH), nullable=False)
+    # name: Mapper[str] = mapped_column(unique=False)
+    email = Column(String(settings.DB_MAX_TEXT_LENGTH), unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    last_login = Column(DateTime, nullable=False, default=dt.datetime.utcnow)
+    updated_at = Column(DateTime, nullable=True, default=None, onupdate=dt.datetime.utcnow())
     user_uuid = Column(UUID(as_uuid=True), nullable=False, default=uuid.uuid4())
     is_staff = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=False)
+    verified_at = Column(DateTime, nullable=True, default=None)
+
+    def get_context_string(self, context: str):
+        return f"{context}{self.hashed_password[-6:]}{self.updated_at.strftime('%m%d%Y%H%M%S')}".strip()
+
+
+    tokens = relationship("UserToken", back_populates="user")
 
     def __repr__(self) -> str:
-        return
+        return ""
 
 
-# class User(Base):
-#     __tablename__ = 'users'
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     name = Column(String(150))
-#     email = Column(String(255), unique=True, index=True)
-#     password = Column(String(100))
-#     is_active = Column(Boolean, default=False)
-#     verified_at = Column(DateTime, nullable=True, default=None)
-#     updated_at = Column(DateTime, nullable=True, default=None, onupdate=datetime.now)
-#     created_at = Column(DateTime, nullable=False, server_default=func.now())
-#
-#     tokens = relationship("UserToken", back_populates="user")
-#
-#     def get_context_string(self, context: str):
-#         return f"{context}{self.password[-6:]}{self.updated_at.strftime('%m%d%Y%H%M%S')}".strip()
-#
-#
-# class UserToken(Base):
-#     __tablename__ = "user_tokens"
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     user_id = mapped_column(ForeignKey('users.id'))
-#     access_key = Column(String(250), nullable=True, index=True, default=None)
-#     refresh_key = Column(String(250), nullable=True, index=True, default=None)
-#     created_at = Column(DateTime, nullable=False, server_default=func.now())
-#     expires_at = Column(DateTime, nullable=False)
-#
-#     user = relationship("User", back_populates="tokens")
+class UserToken(BaseInfoMixin, Base):
+    __tablename__ = "user_tokens"
+
+    user_id = mapped_column(ForeignKey("users.id"))
+    access_key = Column(String(250), nullable=True, index=True, default=None)
+    refresh_key = Column(String(250), nullable=True, index=True, default=None)
+    expires_at = Column(DateTime, nullable=False)
+
+    user = relationship("User", back_populates="tokens")

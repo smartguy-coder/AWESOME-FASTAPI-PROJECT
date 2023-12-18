@@ -9,6 +9,7 @@ nav:
   - Database : db_connection.md
   - Used Ports: used_ports.md
   - CI/CD: action.md
+  - Other services: services.md
 
 theme:
   name: material

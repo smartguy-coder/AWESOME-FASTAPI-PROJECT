@@ -48,21 +48,27 @@ install: # make install package='fastapi[all]'
 # add package for project development
 .PHONY: install-dev
 install-dev:  # make install-dev package='pytest'
-	poetry add ${package} --dev
+	poetry add ${package} --group dev
 	poetry install
 
 ################################################################################
+.PHONY: migrate
+migrate:
+	alembic upgrade head
+
+
 .PHONY: run
-run:
-	uvicorn app.main:app --reload --port 8001
+run: migrate
+	uvicorn app.main:app --reload --port 8000
 
 
 .PHONY: docs
 docs:
 	mkdocs serve -a 127.0.0.1:12000
 
-.PHONY: check-fix-code
-check-fix-code:
+
+.PHONY: checks
+checks:
 	@echo "Start check🐿"
 	black .
 	isort .

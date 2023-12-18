@@ -11,6 +11,7 @@ class TestAddStory:
     @pytest.fixture(scope="class", autouse=True)
     @classmethod
     def setup_class(cls, new_story):
+        # cls.client = client
         cls.URL_ADD_STORY: str = "/api/stories/add"
         cls.URL_FIND_ONE_STORY: str = "/api/stories/id/{story_id}"
         cls.UUID_NEW_STORY: dict = {"story_id": None}

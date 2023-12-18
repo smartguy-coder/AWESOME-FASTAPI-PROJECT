@@ -1,4 +1,4 @@
-from app.schemas import StorySaved
+from app.schemas.schemas_stories import StorySaved
 from app.storage.no_sql_storage import mongo_db
 
 
