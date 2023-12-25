@@ -1,8 +1,8 @@
 import base64
 import random
+import secrets
 import string
 import uuid
-import secrets
 
 
 def create_str_uuid4() -> str:
@@ -21,8 +21,8 @@ def unique_string(byte: int = 8) -> str:
 
 
 def str_encode(string: str) -> str:
-    return base64.b85encode(string.encode('ascii')).decode('ascii')
+    return base64.b85encode(string.encode("ascii")).decode("ascii")
 
 
 def str_decode(string: str) -> str:
-    return base64.b85decode(string.encode('ascii')).decode('ascii')
+    return base64.b85decode(string.encode("ascii")).decode("ascii")

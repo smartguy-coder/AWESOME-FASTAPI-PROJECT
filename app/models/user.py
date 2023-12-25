@@ -3,10 +3,37 @@ import uuid
 
 from sqlalchemy import (UUID, Boolean, Column, DateTime, ForeignKey, Integer,
                         String)
-from sqlalchemy.orm import mapped_column, relationship, Mapper
+# from sqlalchemy.orm import Mapper, mapped_column, relationship
+from sqlalchemy.orm import relationship
 
 from app.database import Base
 from app.settings import settings
+
+# from typing import Optional
+
+
+#
+# from typing import Optional
+#
+# from sqlalchemy import Integer, String, ForeignKey
+# from sqlalchemy.orm import Mapped
+# from sqlalchemy.orm import mapped_column
+#
+# from database import Base
+#
+#
+# # https://docs.sqlalchemy.org/en/20/orm/mapping_styles.html
+# class User(Base):
+#     __tablename__ = "users"
+#
+#     id: Mapped[int] = mapped_column(primary_key=True)
+#     name: Mapped[str]
+#     login: Mapped[str] = mapped_column(String(30), unique=True, index=True)
+#     password: Mapped[str]
+#     nickname: Mapped[Optional[str]]
+#     is_active: Mapped[bool] = mapped_column(default=True)
+#     age: Mapped[int]
+#     money: Mapped[int] = mapped_column(default=0)
 
 
 class BaseInfoMixin:
@@ -24,7 +51,6 @@ class User(BaseInfoMixin, Base):
     __tablename__ = "users"
 
     name = Column(String(settings.DB_MAX_TEXT_LENGTH), nullable=False)
-    # name: Mapper[str] = mapped_column(unique=False)
     email = Column(String(settings.DB_MAX_TEXT_LENGTH), unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     last_login = Column(DateTime, nullable=False, default=dt.datetime.utcnow)
@@ -37,7 +63,6 @@ class User(BaseInfoMixin, Base):
     def get_context_string(self, context: str):
         return f"{context}{self.hashed_password[-6:]}{self.updated_at.strftime('%m%d%Y%H%M%S')}".strip()
 
-
     tokens = relationship("UserToken", back_populates="user")
 
     def __repr__(self) -> str:
@@ -47,7 +72,7 @@ class User(BaseInfoMixin, Base):
 class UserToken(BaseInfoMixin, Base):
     __tablename__ = "user_tokens"
 
-    user_id = mapped_column(ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
     access_key = Column(String(250), nullable=True, index=True, default=None)
     refresh_key = Column(String(250), nullable=True, index=True, default=None)
     expires_at = Column(DateTime, nullable=False)

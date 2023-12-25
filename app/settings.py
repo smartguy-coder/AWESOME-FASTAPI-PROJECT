@@ -1,8 +1,9 @@
-import os
+# import os
 from functools import lru_cache
 
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings, SettingsConfigDict
+# from pydantic_settings import SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 # for working in debug mode
 load_dotenv()
@@ -11,7 +12,7 @@ load_dotenv()
 class Settings(BaseSettings):
     APP_NAME: str = "Awesome API"
     SENTRY_SDK_DSN: str
-    CURRENT_APP_VERSION: str = "0.1.0"
+    CURRENT_APP_VERSION: str = "0.2.0"
     DEBUG: bool = True
 
     # MongoDB settings
@@ -47,7 +48,10 @@ class Settings(BaseSettings):
         return url
 
     # in order to place settings with the main file we dynamically get path to .env
-    model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
+    # model_config = SettingsConfigDict(env_file=os.path.join(os.getcwd(), ".env"))
+    # or
+    class Config:
+        env_file = ".env"
 
     # text field length
     DB_MAX_TEXT_LENGTH: int = 2**6
@@ -64,7 +68,6 @@ class Settings(BaseSettings):
     EMAIL_USER: str
     IMAP_SERVER: str
     SMTP_SERVER: str
-
 
 
 @lru_cache

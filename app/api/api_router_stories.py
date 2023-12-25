@@ -1,6 +1,8 @@
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, status
+from fastapi import (APIRouter, BackgroundTasks, Depends, HTTPException, Query,
+                     status)
 from pydantic_core import ValidationError
 
+from app.auth.security_lib import SecurityHandler
 from app.schemas import schemas_stories
 from app.storage.no_sql_storage import mongo_db
 from app.tasks import tasks_fastapi
@@ -13,9 +15,9 @@ router = APIRouter(
 
 @router.post("/add", status_code=status.HTTP_201_CREATED)
 async def add_story_post(
-    story: schemas_stories.StoryNew, background_tasks: BackgroundTasks
+    story: schemas_stories.StoryNew, background_tasks: BackgroundTasks, user=Depends(SecurityHandler.get_current_user)
 ) -> schemas_stories.StorySaved:
-    saved_story = schemas_stories.StorySaved(**story.model_dump())
+    saved_story = schemas_stories.StorySaved(**story.model_dump(), **{"author": user.name, "author_id": user.id})
     background_tasks.add_task(tasks_fastapi.write_story_into_mongodb, saved_story)
     return saved_story
 

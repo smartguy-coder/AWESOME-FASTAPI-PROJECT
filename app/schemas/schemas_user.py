@@ -1,13 +1,11 @@
-from pydantic import BaseModel, EmailStr, Field
-
-from app.settings import settings
 from datetime import datetime
 from typing import Union
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 from app.schemas.base import BaseResponse
+from app.settings import settings
 
 
 class BaseFields(BaseModel):
@@ -40,7 +38,7 @@ class UserResponse(BaseResponse):
     is_active: bool
     created_at: Union[str, None, datetime] = None
     user_uuid: UUID
-    additional_info: dict = {'message': 'Please, check your email box'}
+    additional_info: dict = {"message": "Please, check your email box"}
 
 
 class LoginResponse(BaseModel):
