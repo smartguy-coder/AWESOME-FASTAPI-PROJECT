@@ -26,6 +26,10 @@ psycopg2-binary = "^2.9.9"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 pyjwt = "^2.8.0"
 fastapi-mail = "^1.4.1"
+pyotp = "^2.9.0"
+gunicorn = "^21.2.0"
+pyqrcode = "^1.2.1"
+pypng = "^0.20220715.0"
 
 
 
