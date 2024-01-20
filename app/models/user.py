@@ -2,14 +2,13 @@ import datetime
 import datetime as dt
 import uuid
 
-from sqlalchemy import (
-    UUID, Boolean, Column, DateTime, ForeignKey, Integer, String,
-)
+from sqlalchemy import (UUID, Boolean, Column, DateTime, ForeignKey, Integer,
+                        String)
 from sqlalchemy.orm import relationship
 
+from app.auth.otp_module import OneTimePassword
 from app.database import Base
 from app.settings import settings
-from app.auth.otp_module import OneTimePassword
 
 
 class BaseInfoMixin:

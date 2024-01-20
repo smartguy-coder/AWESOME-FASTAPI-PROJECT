@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.api import api_router_auth, api_router_stories, api_router_user
-from app.web import web_auth_router, web_login_router
 from app.settings import settings
+from app.web import web_auth_router, web_login_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -23,7 +23,7 @@ app.include_router(api_router_auth.auth_protected_router)
 app.include_router(web_auth_router.router)
 app.include_router(web_login_router.router)
 
-app.mount('/app/static', StaticFiles(directory='app/static'), name='static')
+app.mount("/app/static", StaticFiles(directory="app/static"), name="static")
 
 # TODO: temporary disable to check regular web endpoints. In future useful for REACT
 # app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}')

@@ -1,16 +1,14 @@
-from operator import le
-from typing import List
-from typing import Optional
 from pathlib import Path
-from fastapi import Request, APIRouter, HTTPException
-from fastapi.templating import Jinja2Templates
-from app.auth.otp_module import OneTimePassword
-from app.database import get_async_session
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.bl import user as user_bl
-from app.auth.security_lib import SecurityHandler
+from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.templating import Jinja2Templates
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.auth.otp_module import OneTimePassword
+from app.auth.security_lib import SecurityHandler
+from app.bl import user as user_bl
+from app.database import get_async_session
 from app.models.user import User
 
 templates = Jinja2Templates(directory=Path(__file__).parent.parent / "templates" / "web" / "login")
@@ -46,7 +44,7 @@ class LoginForm:
 @router.get("/login/")
 @router.post("/login/")
 async def login(request: Request, session: AsyncSession = Depends(get_async_session)):
-    if request.method == 'GET':
+    if request.method == "GET":
         return templates.TemplateResponse("login.html", {"request": request})
 
     form = LoginForm(request)

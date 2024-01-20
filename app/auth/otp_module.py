@@ -1,6 +1,7 @@
-import pyotp
-import os
 import base64
+import os
+
+import pyotp
 
 
 class OneTimePassword:
@@ -13,4 +14,4 @@ class OneTimePassword:
 
     @staticmethod
     def create_otp_secret() -> str:
-        return base64.b32encode(os.urandom(20)).decode('utf-8')
+        return base64.b32encode(os.urandom(20)).decode("utf-8")

@@ -1,28 +1,25 @@
-from typing import List
-from typing import Optional
+import base64
 import re
 from io import BytesIO
-import base64
-from app import exceptions
-from fastapi import APIRouter, BackgroundTasks
-from fastapi import Depends
+from pathlib import Path
+from typing import List, Optional
+
+import pyqrcode
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app import exceptions
 from app.auth.security_lib import SecurityHandler
-from app.database import get_async_session
 from app.bl import user as user_bl
-from pathlib import Path
-from fastapi import Request, status
-from fastapi.templating import Jinja2Templates
-import pyqrcode
+from app.database import get_async_session
 from app.tasks import background_emails
-
-from pydantic import BaseModel, validate_email
 
 templates = Jinja2Templates(directory=Path(__file__).parent.parent / "templates" / "web" / "auth")
 router = APIRouter(include_in_schema=False)
 
-email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+email_regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
 
 
 class UserCreate(BaseModel):
@@ -69,13 +66,15 @@ class UserCreateForm:
         return False
 
 
-@router.get("/signup/", description='registration step 1')
-def register(request: Request):
+@router.get("/signup/", description="registration step 1")
+async def register_step1(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request})
 
 
-@router.post("/signup/", description='registration step 2')
-async def register(request: Request, background_tasks: BackgroundTasks, session: AsyncSession = Depends(get_async_session)):
+@router.post("/signup/", description="registration step 2")
+async def register(
+    request: Request, background_tasks: BackgroundTasks, session: AsyncSession = Depends(get_async_session)
+):
     form = UserCreateForm(request)
     await form.load_data()
     if await form.is_valid():
@@ -87,7 +86,7 @@ async def register(request: Request, background_tasks: BackgroundTasks, session:
                 use_two_factor_auth=True,
                 session=session,
             )
-            data = 'otpauth://totp/FastAPI-2FA:{0}?secret={1}&issuer=FastAPI-2FA'.format(user.email, user.otp_secret)
+            data = "otpauth://totp/FastAPI-2FA:{0}?secret={1}&issuer=FastAPI-2FA".format(user.email, user.otp_secret)
             url = pyqrcode.create(data)
             stream = BytesIO()
             url.png(stream, scale=4, module_color=(0, 0, 0, 255), background=(255, 255, 255, 255))
@@ -100,9 +99,9 @@ async def register(request: Request, background_tasks: BackgroundTasks, session:
                 host=request.base_url,
             )
 
-            return templates.TemplateResponse("qrcode.html", {"request": request,
-                                                              "data": base64.b64encode(stream.getvalue()).decode(
-                                                                  'utf-8')})
+            return templates.TemplateResponse(
+                "qrcode.html", {"request": request, "data": base64.b64encode(stream.getvalue()).decode("utf-8")}
+            )
         except exceptions.DuplicatedEntryError:
             form.__dict__.get("errors").append("Duplicate username or email")
             return templates.TemplateResponse("signup.html", form.__dict__)
@@ -110,5 +109,5 @@ async def register(request: Request, background_tasks: BackgroundTasks, session:
 
 
 @router.get("/qrcode")
-async def register(request: Request):
+async def qrcode_endpoint(request: Request):
     return templates.TemplateResponse("qrcode/qrcode.html", {"request": request})
