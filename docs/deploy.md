@@ -174,3 +174,18 @@ systemctl start {some name}
 ```
 systemctl status {some name}
 ```
+
+
+### Buying a domain using [godaddy.com](https://godaddy.com)
+<i><b>INFO: for some reason using service domain.com I had no access to my account</b></i>
+
+![](img/set_domain/1.png)
+![](img/set_domain/2.png)
+![](img/set_domain/3.png)
+![](img/set_domain/4.png)
+![](img/set_domain/5.png)
+![](img/set_domain/6.png)
+![](img/set_domain/7.png)
+![](img/set_domain/8.png)
+![](img/set_domain/8-1.png)
+![](img/set_domain/9.png)
