@@ -26,5 +26,4 @@
 #         latest_stories = collection.find().sort([("_id", -1)]).limit(limit).skip(skip)
 #         return latest_stories
 
-
 # mongo_storage = MongoDBStorage()
