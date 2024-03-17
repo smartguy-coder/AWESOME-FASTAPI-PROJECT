@@ -1,6 +1,8 @@
 import sentry_sdk
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api import api_router_auth, api_router_user
 from app.settings import settings
@@ -12,6 +14,8 @@ app = FastAPI(
     version=settings.CURRENT_APP_VERSION,
     debug=settings.DEBUG,
 )
+app.add_middleware(GZipMiddleware)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=['127.0.0.1'])
 
 sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
