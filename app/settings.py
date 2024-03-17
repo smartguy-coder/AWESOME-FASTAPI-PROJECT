@@ -1,8 +1,7 @@
-# import os
+import socket
 from functools import lru_cache
 
 from dotenv import load_dotenv
-# from pydantic_settings import SettingsConfigDict
 from pydantic_settings import BaseSettings
 
 # for working in debug mode
@@ -10,18 +9,10 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Awesome API"
+    APP_NAME: str = f"Awesome API at hostname {socket.gethostname()}"
     SENTRY_SDK_DSN: str
     CURRENT_APP_VERSION: str = "0.2.0"
     DEBUG: bool = True
-
-    @property
-    def MONGODB_URI_FINAL(self) -> str:
-        return self.MONGODB_URI.format(
-            mongodb_user=self.MONGODB_USER,
-            mongodb_password=self.MONGODB_PASSWORD,
-            mongodb_server=self.MONGODB_SERVER,
-        )
 
     # Postgres settings
     DATABASE_NAME: str
