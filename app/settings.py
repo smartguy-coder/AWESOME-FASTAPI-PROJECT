@@ -15,14 +15,6 @@ class Settings(BaseSettings):
     CURRENT_APP_VERSION: str = "0.2.0"
     DEBUG: bool = True
 
-    # MongoDB settings
-    MONGODB_USER: str
-    MONGODB_PASSWORD: str
-    MONGODB_URI: str
-    MONGODB_SERVER: str
-    MONGODB_DB_STORIES: str = "stories"
-    MONGODB_COLLECTION_STORIES: str = "user_stories"
-
     @property
     def MONGODB_URI_FINAL(self) -> str:
         return self.MONGODB_URI.format(
