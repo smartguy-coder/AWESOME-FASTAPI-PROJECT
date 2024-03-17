@@ -2,7 +2,7 @@ import sentry_sdk
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.api import api_router_auth, api_router_stories, api_router_user
+from app.api import api_router_auth, api_router_user
 from app.settings import settings
 from app.web import web_auth_router, web_login_router
 
@@ -15,7 +15,6 @@ app = FastAPI(
 
 sentry_sdk.init(dsn=settings.SENTRY_SDK_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
-app.include_router(api_router_stories.router)
 app.include_router(api_router_user.router)
 app.include_router(api_router_auth.guest_router)
 app.include_router(api_router_auth.auth_protected_router)

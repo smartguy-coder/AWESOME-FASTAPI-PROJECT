@@ -22,7 +22,7 @@ async def create_user_account(
     background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_async_session),
 ):
-    is_login_already_used = await user_bl.get_user_by_email(new_user.email)
+    is_login_already_used = await user_bl.get_user_by_email(new_user.email, session=session)
     if is_login_already_used:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=f"User with email {new_user.email} already exists"

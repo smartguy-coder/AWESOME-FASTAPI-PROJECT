@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  postgres_database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: our_database
+      POSTGRES_USER: our_user
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - main_network
+
+  api:
+    build: .
+    env_file: .env
+    command: bash -c "alembic upgrade head &&  uvicorn app.main:app --port=9000 --host=0.0.0.0 --reload"
+    volumes:
+      - .:/app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres_database
+    networks:
+      - main_network
+
+networks:
+  main_network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    external: false
