@@ -50,7 +50,6 @@ async def login(request: Request, session: AsyncSession = Depends(get_async_sess
     form = LoginForm(request)
     await form.load_data()
     if await form.is_valid():
-        print(form.token, type(form.token), 888888888888)
         valid_password, valid_token = None, None
         try:
             user: User = await user_bl.get_user_by_email(form.email, session=session)
