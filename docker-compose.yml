@@ -1,6 +1,5 @@
 version: "3.8"
 
-
 x-service-common: &service-common
   build: .
   env_file: .env
@@ -14,6 +13,7 @@ x-service-common: &service-common
 
 services:
   postgres_database:
+#    https://habr.com/ru/articles/578744/
     image: postgres:15-alpine
     restart: always
     environment:
@@ -31,7 +31,6 @@ services:
     <<: *service-common
     ports:
       - "9000:9000"
-
 
   api2:
     <<: *service-common
@@ -58,6 +57,33 @@ services:
     networks:
       - main_network
 
+  redis:
+    image: redis:7.0.5-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=my-password
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "500mb", "--maxmemory-policy", "allkeys-lru"]
+    links:
+      - redis-commander
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: redis
+      REDIS_HOST: redis
+      REDIS_PORT: redis:6379
+      REDIS_PASSWORD: my-password
+
+      HTTP_USER: root
+      HTTP_PASSWORD: root
+    ports:
+      - "8081:8081"
 
 networks:
   main_network:
